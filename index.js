@@ -20,9 +20,9 @@ const client = new MongoClient(uri, {
     }
 });
 
-const dbConnection = () => {
+const dbConnection = async () => {
     try {
-        client.connect();
+        await client.connect();
         console.log("Db connection successful");
     } catch (error) {
         console.log(error.name, error.message);
@@ -266,14 +266,14 @@ app.put('/issues/:id', async (req, res) => {
     console.log(updateIssue);
     const issue = {
         $set: {
-           memberName: updateIssue.memberName,
-           bookName: updateIssue.bookName,
-           category: updateIssue.category,
-           author: updateIssue.author,
-           section: updateIssue.section,
-           shelf: updateIssue.shelf,
-           issueDate: updateIssue.issueDate,
-           expireDate: updateIssue.expireDate
+            memberName: updateIssue.memberName,
+            bookName: updateIssue.bookName,
+            category: updateIssue.category,
+            author: updateIssue.author,
+            section: updateIssue.section,
+            shelf: updateIssue.shelf,
+            issueDate: updateIssue.issueDate,
+            expireDate: updateIssue.expireDate
         }
     };
     const result = await issueCollection.updateOne(filter, issue, options);
@@ -289,14 +289,14 @@ app.put('/returns/:id', async (req, res) => {
     console.log(updateReturn);
     const returnBook = {
         $set: {
-           memberName: updateReturn.memberName,
-           bookName: updateReturn.bookName,
-           category: updateReturn.category,
-           author: updateReturn.author,
-           issueDate: updateReturn.issueDate,
-           expireDate: updateReturn.expireDate,
-           returnDate: updateReturn.returnDate,
-           lateFee: updateReturn.lateFee
+            memberName: updateReturn.memberName,
+            bookName: updateReturn.bookName,
+            category: updateReturn.category,
+            author: updateReturn.author,
+            issueDate: updateReturn.issueDate,
+            expireDate: updateReturn.expireDate,
+            returnDate: updateReturn.returnDate,
+            lateFee: updateReturn.lateFee
         }
     };
     const result = await returnCollection.updateOne(filter, returnBook, options);
@@ -309,7 +309,7 @@ app.delete('/books/:id', async (req, res) => {
     const query = { _id: new ObjectId(id) };
     const result = await bookCollection.deleteOne(query);
     res.send(result);
-  })
+})
 
 
 app.delete('/members/:id', async (req, res) => {
@@ -317,28 +317,28 @@ app.delete('/members/:id', async (req, res) => {
     const query = { _id: new ObjectId(id) };
     const result = await memberCollection.deleteOne(query);
     res.send(result);
-  })
+})
 
 app.delete('/sections/:id', async (req, res) => {
     const id = req.params.id;
     const query = { _id: new ObjectId(id) };
     const result = await sectionCollection.deleteOne(query);
     res.send(result);
-  })
+})
 
 app.delete('/issues/:id', async (req, res) => {
     const id = req.params.id;
     const query = { _id: new ObjectId(id) };
     const result = await issueCollection.deleteOne(query);
     res.send(result);
-  })
+})
 
 app.delete('/returns/:id', async (req, res) => {
     const id = req.params.id;
     const query = { _id: new ObjectId(id) };
     const result = await returnCollection.deleteOne(query);
     res.send(result);
-  })
+})
 
 app.get('/', (req, res) => {
     res.send('Welcome to Bookeep Library Management System')
